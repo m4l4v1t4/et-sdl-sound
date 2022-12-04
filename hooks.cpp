@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <sys/mman.h>
 #include <cstdlib>
 #include <limits.h>
+#include <unistd.h>
 
 #ifdef __SDL
 #include <SDL/SDL.h>
@@ -378,7 +379,7 @@ unsigned int calculateProcCRC32()
 	char filename[PATH_MAX];
 	ssize_t len;
 	
-	if ((len = readlink("/proc/self/exe", filename, sizeof(filename) - 1)) < 1) {
+	if ((len = ::readlink("/proc/self/exe", filename, sizeof(filename) - 1)) < 1) {
 		std::cout << "Can't find actual binary." << std::endl;
 		return 0x00000000;
 	}

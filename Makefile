@@ -14,8 +14,9 @@ LIB = et-sdl-sound.so
 SCRIPTS = et-sdl-sound wolf-sdl-sound wolfsp-sdl-sound quake3-sdl-sound
 SCRIPT_IN = launcher-script.in
 
-CFLAGS = -m32 -O2 -fomit-frame-pointer -Wall -fPIC -D__SDL -D__DLOPEN_SDL -D__DEFAULT_BACKEND=SDL
-LDFLAGS = -m32 -shared
+CFLAGS = -m32 -O2 -fomit-frame-pointer -Wall -fPIC -D__SDL -D__DLOPEN_SDL -D__DEFAULT_BACKEND=SDL -std=c++11
+CCFLAGS = -std=c11
+LDFLAGS = -m32 -shared -std=c++11
 
 all: $(SCRIPTS)
 
@@ -38,7 +39,7 @@ $(BUILD)/etalsa.o: etalsa.cpp $(HEADERS)
 	$(CPP) $(CFLAGS) -c etalsa.cpp -o $(BUILD)/etalsa.o
 
 embed-lib: embed-lib.c
-	$(CC) embed-lib.c -Wall -o embed-lib
+	$(CC) $(CCFLAGS) embed-lib.c -Wall -o embed-lib
 
 et-sdl-sound: $(LIB) $(SCRIPT_IN) embed-lib
 	sed 's/--script-name--/et-sdl-sound/g;s/--game-bin--/et.x86/g;s/--game-dir--/enemy-territory/g' $(SCRIPT_IN) > et-sdl-sound
